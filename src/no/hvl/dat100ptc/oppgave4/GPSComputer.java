@@ -26,16 +26,21 @@ public class GPSComputer {
 		return this.gpspoints;
 	}
 	
+	private static int R = 6371000; // jordens radius
+
+	
 	// beregn total distances (i meter)
 	public double totalDistance() {
 
 		double distance = 0;
 
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - SLUTT
+		for (int i = 1; i < gpspoints.length; i++) {
+			
+			distance += GPSUtils.distance(gpspoints[i-1], gpspoints[i]);
+			
+		}
+		
+		return distance;
 
 	}
 
@@ -44,18 +49,30 @@ public class GPSComputer {
 
 		double elevation = 0;
 
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - SLUTT
+		for (int i = 1; i < gpspoints.length; i++) {
+			
+			if(gpspoints[i].getElevation() > gpspoints[i-1].getElevation()) {
+				elevation += gpspoints[i].getElevation() - gpspoints[i-1].getElevation();
+			}
+			
+		}
+		
+		return elevation;
 
 	}
 
 	// beregn total tiden for hele turen (i sekunder)
 	public int totalTime() {
-
-		throw new UnsupportedOperationException(TODO.method());
+		
+		int tid = 0;
+		
+		for (int i = 1; i < gpspoints.length; i++) {
+			
+			tid += gpspoints[i].getTime();
+			
+		}
+		
+		return tid;
 
 	}
 		
@@ -63,35 +80,38 @@ public class GPSComputer {
 
 	public double[] speeds() {
 		
-		// TODO - START		// OPPGAVE - START
+		double[] speeds = new double[gpspoints.length -1];
 		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - SLUTT
-
+		for (int i = 1; i < gpspoints.length; i++) {
+			
+			speeds[i-1] = GPSUtils.speed(gpspoints[i-1], gpspoints[i]);
+			
+		}
+		
+		return speeds;
+			
 	}
 	
 	public double maxSpeed() {
 		
 		double maxspeed = 0;
 		
-		// TODO - START
+		maxspeed = GPSUtils.findMax(speeds());
 		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - SLUTT
-		
+		return maxspeed;
 	}
 
 	public double averageSpeed() {
 
 		double average = 0;
 		
-		// TODO - START
+		for (int i = 0; i < speeds().length; i++) {
+			average += speeds()[i];
+		}
 		
-		throw new UnsupportedOperationException(TODO.method());
+		average = average / speeds().length;
 		
-		// TODO - SLUTT
+		return average;
 		
 	}
 
